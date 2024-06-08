@@ -19,8 +19,16 @@ typedef struct {
 stAlumno cargarAlumno();
 void cargarVariosAlumnos (stAlumno alumnos[]);
 void mostrarAlumno (stAlumno alumno);
-void mostrarAlumnosDesdeArchivo();
+void mostrarAlumnosDesdeArchivo(char archivoNombre[]);
 void pasarArchivoAPilaMayores (Pila * pilita, char archivo[]);
 int contarAlumnosMayores (char archivo[], int edad);
+void mostrarAlumnosRango (int min, int max);
+void mostrarAlumnoMayor ();
+int buscaPosMayor (int nums[], int v);
+int contarAlumnosAnio (char archivo[], int anio);
+void pasarArregloAArchivo (char archivo[], stAlumno arreglo[], int v);
+int pasarArchivoAArregloAnio (char archivo[], stAlumno arreglo[], int anio);
+int contarRegistrosArchivo (char archivo[]);
+int cargarArregloAlumnos (stAlumno arreglo[]);
 
 #endif // ALUMNO_H_INCLUDED
