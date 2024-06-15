@@ -22,6 +22,7 @@ void menu (){
     int opcion = 0;
     int i = 0;
     int anio;
+    int legajo;
 
     Pila pilita;
     inicpila(&pilita);
@@ -63,6 +64,25 @@ void menu (){
             system("cls");
             mostrarAlumno(alumnito[0]);
             printf("\n%d alumnos fueron copiados", i);
+
+            break;
+
+        case 5:
+
+            system("cls");
+            printf("LEGAJO:");
+            scanf("%d", &legajo);
+
+            modificarRegistro(ALUMNOS, legajo);
+
+            break;
+
+        case 6:
+
+            invertirDatosArchivo(ALUMNOS);
+
+
+            break;
         }
 
         system("pause");
@@ -81,8 +101,10 @@ void mostrarOpciones (){
     printf("----------------------------------------------\n");
     printf("4- DESCARGAR DATOS DE UN CURSO\n");
     printf("----------------------------------------------\n");
-//    printf("5- DESCARGAR CURSO\n");
-//    printf("----------------------------------------------\n");
+    printf("5- MODIFICAR UN REGISTRO\n");
+    printf("----------------------------------------------\n");
+    printf("6- INVERTIR EL REGISTRO DE ALUMNOS\n");
+    printf("----------------------------------------------\n");
 
 }
 
@@ -93,6 +115,7 @@ void subMenuMostrarAlumnos (){
     int opcion = 0;
     int min;
     int max;
+    int nro;
 
     printf("----------------------------------------------\n");
     printf("1- MOSTRAR TODOS LOS ALUMNOS\n");
@@ -100,6 +123,8 @@ void subMenuMostrarAlumnos (){
     printf("2- FILTRAR POR EDAD\n");
     printf("----------------------------------------------\n");
     printf("3- MOSTRAR MAYORES\n");
+    printf("----------------------------------------------\n");
+    printf("4- MOSTRAR UN REGISTRO\n");
     printf("----------------------------------------------\n");
 
 
@@ -130,6 +155,15 @@ void subMenuMostrarAlumnos (){
     case 3:
 
         mostrarAlumnoMayor(ALUMNOS);
+
+        break;
+
+    case 4:
+
+        printf("NUMERO DE REGISTRO: ");
+        scanf("%d", &nro);
+
+        mostrarUnRegistroArchivo(ALUMNOS, nro);
 
         break;
     }

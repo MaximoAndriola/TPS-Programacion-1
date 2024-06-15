@@ -297,6 +297,7 @@ void mostrarUnRegistroArchivo (char archivo[], int nro){
 
     int i = 0;
     int bandera = 0;
+    int nroRegistros = 0;
     stAlumno aux;
 
     FILE *archi = NULL;
@@ -304,18 +305,159 @@ void mostrarUnRegistroArchivo (char archivo[], int nro){
     archi = fopen(archivo, "rb");
 
     if(archi){
-        int nroAlumnos = ftell(archi) / sizeof(stAlumno);
-        if(nroAlumnos >= nro){
-            nro *= sizeof(stAlumno);
-            while(bandera = 1 && fread(&aux, sizeof(stAlumno), 1, archi) > 0){
+        nroRegistros = contarRegistrosArchivo(ALUMNOS);
+
+        if(nroRegistros >= nro){
+            while(bandera == 0 && fread(&aux, sizeof(stAlumno), 1, archi) > 0){
                 if(nro == i){
                     bandera = 1;
+                    mostrarAlumno(aux);
                 }
             i++;
             }
         }else
             printf("EL NUMERO INGRESADO NO EXISTE EN EL ARCHIVO...\n");
 
+        fclose(archi);
+    }else
+        printf("ERROR AL ABRIR EL ARCHIVO\n");
+
+}
+
+
+void modificarRegistro (char archivo[], int legajo){
+
+    int poslegajo = buscarPosLegajo(archivo, legajo);
+
+    stAlumno aux;
+
+    FILE * archi = NULL;
+
+    archi = fopen(archivo, "r+b");
+
+    if(archi){
+        if(poslegajo >= 0){
+            fseek(archi, sizeof(stAlumno) * poslegajo, SEEK_SET);
+            fread(&aux, sizeof(stAlumno), 1, archi);
+            mostrarAlumno(aux);
+
+            aux = modificarAlumno(aux);
+
+            fseek(archi, sizeof(stAlumno) * (-1), SEEK_CUR);
+            fwrite(&aux, sizeof(stAlumno), 1, archi);
+
+
+        }else
+            printf("ESE LEGAJO NO CORRESPONDE A NINGUN ALUMNO\n");
+
+
+        fclose(archi);
+    }else
+        printf("ERROR AL ABRIR EL ARCHIVO\n");
+
+}
+
+stAlumno modificarAlumno (stAlumno alumno){
+
+    char control = 0;
+
+    system("cls");
+    printf("DESEA MODIFICAR EL NOMBRE: %s s/n", alumno.nombreYapellido);
+    fflush(stdin);
+    scanf("%c", &control);
+    if(control == 's' || control == 'S'){
+        printf("NOMBRE y APELLIDO: ");
+        fflush(stdin);
+        gets(alumno.nombreYapellido);
+    }
+
+    system("cls");
+    printf("DESEA MODIFICAR LA EDAD: %d s/n", alumno.edad);
+    fflush(stdin);
+    scanf("%c", &control);
+    if(control == 's' || control == 'S'){
+        printf("EDAD: ");
+        scanf("%d", &alumno.edad);
+
+    }
+
+    system("cls");
+    printf("DESEA MODIFICAR EL ANIO: %d s/n", alumno.anio);
+    fflush(stdin);
+    scanf("%c", &control);
+    if(control == 's' || control == 'S'){
+        printf("ANIO: ");
+        scanf("%d", &alumno.anio);
+    }
+return alumno;
+}
+
+int buscarPosLegajo (char archivo[], int legajo){
+
+    stAlumno aux;
+    int bandera = 0;
+    int i = 0;
+
+    FILE *archi = NULL;
+
+    archi = fopen(ALUMNOS, "rb");
+
+    if(archi){
+        while(bandera == 0 && fread(&aux, sizeof(stAlumno), 1, archi) > 0){
+            if(legajo == aux.legajo){
+                bandera = 1;
+            }else
+                i++;
+        }
+
+        fseek(archi, 1, SEEK_END);
+
+        if(i == ftell(archi) / sizeof(stAlumno)){
+            i = -1;
+        }
+
+        fclose(archi);
+    }else
+        printf("ERROR AL ABRIR EL ARCHIVO hola\n");
+
+
+
+return i;
+}
+
+void invertirDatosArchivo (char archivo[]){
+
+    int cant;
+    int i = 0;
+    stAlumno posInic, posFin;
+
+    FILE * archi = NULL;
+
+    archi = fopen(archivo, "r+b");
+
+    if(archi){
+        cant = contarRegistrosArchivo(archivo);
+        while(i < cant / 2){
+            rewind(archi);
+
+            fseek(archi, sizeof(stAlumno) * i, SEEK_SET);
+
+            fread(&posInic, sizeof(stAlumno), 1, archi);
+
+            fseek(archi, sizeof(stAlumno) * -(i+1), SEEK_END);
+
+            fread(&posFin, sizeof(stAlumno), 1, archi);
+
+            fseek(archi, sizeof(stAlumno) * i, SEEK_SET);
+
+            fwrite(&posFin, sizeof(stAlumno), 1, archi);
+
+            fseek(archi, sizeof(stAlumno) * -(i+1), SEEK_END);
+
+            fwrite(&posInic, sizeof(stAlumno), 1, archi);
+
+            i++;
+        }
         fclose(archi);
     }else
         printf("ERROR AL ABRIR EL ARCHIVO\n");

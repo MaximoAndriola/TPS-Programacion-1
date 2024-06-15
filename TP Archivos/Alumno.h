@@ -30,5 +30,9 @@ void pasarArregloAArchivo (char archivo[], stAlumno arreglo[], int v);
 int pasarArchivoAArregloAnio (char archivo[], stAlumno arreglo[], int anio);
 int contarRegistrosArchivo (char archivo[]);
 int cargarArregloAlumnos (stAlumno arreglo[]);
+void mostrarUnRegistroArchivo (char archivo[], int nro);
+void modificarRegistro (char archivo[], int legajo);
+stAlumno modificarAlumno (stAlumno alumno);
+void invertirDatosArchivo (char archivo[]);
 
 #endif // ALUMNO_H_INCLUDED
